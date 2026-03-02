@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Incident Reporting System</title>
+</head>
+<body>
+    <h2>Create Incident</h2>
+    <form action="/incidents" method="POST" enctype="multipart/form-data">
+        <input type="text" name="title" placeholder="Title" required><br><br>
+        <textarea name="description" placeholder="Description" required></textarea><br><br>
+        
+        <select name="severity">
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
+        </select><br><br>
+
+        <input type="file" name="file"><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <hr>
+
+    <h2>All Incidents</h2>
+    <button onclick="loadIncidents()">Load Incidents</button>
+    <ul id="incidentList"></ul>
+
+    <script>
+        function loadIncidents() {
+            fetch('/incidents')
+                .then(res => res.json())
+                .then(data => {
+                    const list = document.getElementById('incidentList');
+                    list.innerHTML = '';
+                    data.forEach(item => {
+                        const li = document.createElement('li');
+                        li.innerText = item[1] + " - " + item[3];
+                        list.appendChild(li);
+                    });
+                });
+        }
+    </script>
+</body>
+</html>
